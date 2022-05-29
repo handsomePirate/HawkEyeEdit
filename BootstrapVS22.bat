@@ -1,6 +1,6 @@
 @ECHO off
 REM Check that the submodules exist.
-IF NOT EXIST "ext\imgui\.git" (
+IF NOT EXIST "ext\imgui-node-editor\.git" (
 	ECHO -- Getting submodules --
 	git submodule update --init --recursive
 )

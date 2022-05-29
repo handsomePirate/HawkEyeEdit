@@ -1,5 +1,6 @@
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_opengl3.h>
+#include <application.h>
+#include <imgui_impl_glfw_gl3.h>
+#include <imgui_node_editor.h>
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
 #include <SoftwareCore/DefaultLogger.hpp>
@@ -76,53 +77,54 @@ int main(int argc, char* argv[])
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGuiIO& io = ImGui::GetIO();
 
 	ImGui::StyleColorsDark();
 
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
-	ImGui_ImplOpenGL3_Init(glsl_version);
+	ImGui_ImplGlfwGL3_Init(window, true);
 
-	bool show_demo_window = true;
-	bool show_another_window = false;
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	//ax::NodeEditor::Config config;
+	//config.SettingsFile = "HawkEyeEdit.json";
+	//ax::NodeEditor::EditorContext* editorContext = ax::NodeEditor::CreateEditor(&config);
+
+	ImVec4 clearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+	Application_Initialize();
 
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
 
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
+		ImGui_ImplGlfwGL3_NewFrame();
 
-		{
-			static float f = 0.0f;
-			static int counter = 0;
+		ImGui::SetNextWindowPos(ImVec2(0, 0));
+		ImGui::SetNextWindowSize(io.DisplaySize);
+		ImGui::Begin("Content", nullptr,
+			ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoSavedSettings |
+			ImGuiWindowFlags_NoBringToFrontOnFocus);
 
-			ImGui::Begin("Hello, world!");
+		Application_Frame();
 
-			ImGui::ColorEdit3("clear color", (float*)&clear_color);
-
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-			ImGui::End();
-		}
+		ImGui::End();
 
 		ImGui::Render();
-		int display_w, display_h;
-		glfwGetFramebufferSize(window, &display_w, &display_h);
-		glViewport(0, 0, display_w, display_h);
-		glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
+		int displayWidth, displayHeight;
+		glfwGetFramebufferSize(window, &displayWidth, &displayHeight);
+		glViewport(0, 0, displayWidth, displayHeight);
+		glClearColor(clearColor.x * clearColor.w, clearColor.y * clearColor.w, clearColor.z * clearColor.w, clearColor.w);
 		glClear(GL_COLOR_BUFFER_BIT);
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+		ImGui::Render();
 		glfwSwapBuffers(window);
 	}
 
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
+	Application_Finalize();
+
+	ImGui_ImplGlfwGL3_Shutdown();
+
 	ImGui::DestroyContext();
 
-	glfwDestroyWindow(window);
 	glfwTerminate();
 
 	return 0;

@@ -9,9 +9,9 @@ project "HawkEyeEdit"
 	files { 
 		"../../src/**.hpp",
 		"../../src/**.cpp",
-		"../../ext/imgui/backends/imgui_impl_glfw.cpp",
-		"../../ext/imgui/backends/imgui_impl_opengl3.cpp",
-		"../../ext/imgui/examples/libs/gl3w/GL/gl3w.c"
+		"../../ext/imgui-node-editor/external/gl3w/source/gl3w.c",
+		"../../ext/imgui-node-editor/examples/application/source/glfw/imgui_impl_glfw_gl3.h",
+		"../../ext/imgui-node-editor/examples/application/source/glfw/imgui_impl_glfw_gl3.cpp"
 	}
 
 	flags {
@@ -20,21 +20,19 @@ project "HawkEyeEdit"
 
 	includedirs {
 		SoftwareCoreInclude,
-		"../../ext/imgui",
-		"../../ext/imgui-node-editor",
-		"../../ext/imgui/examples/libs/glfw/include",
-		"../../ext/imgui/examples/libs/gl3w",
-		"../../ext/imgui/backends"
+		ImguiInclude,
+		ImguiNodeEditorInclude,
+		"../../ext/imgui-node-editor/external/glfw/include",
+		"../../ext/imgui-node-editor/external/gl3w/Include",
+		"../../ext/imgui-node-editor/examples/application/include",
+		"../../ext/imgui-node-editor/examples/application/source/glfw"
 	}
 
 	links {
 		"SoftwareCore",
-		"imgui",
 		"ImguiNodeEditor",
-		"../../ext/imgui/examples/libs/glfw/lib-vc2010-64/glfw3.lib",
-		"opengl32.lib",
-		"gdi32.lib",
-		"shell32.lib"
+		"../../ext/imgui-node-editor/external/glfw/lib-vc2010-64/glfw3.lib",
+		"opengl32.lib"
 	}
 	
 	filter "configurations:Debug"
