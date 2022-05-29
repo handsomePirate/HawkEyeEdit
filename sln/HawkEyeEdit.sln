@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HawkEyeEdit", "..\proj\HawkEyeEdit\HawkEyeEdit.vcxproj", "{B90DD8BB-25C3-50B1-AEB7-4A881A6C47B5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ext", "ext", "{7DFBF67E-E965-ABF5-32A4-5C9B9E4D894A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "ImGui.vcxproj", "{C0FF640D-2C14-8DBE-F595-301E616989EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B90DD8BB-25C3-50B1-AEB7-4A881A6C47B5}.Debug|x64.ActiveCfg = Debug|x64
+		{B90DD8BB-25C3-50B1-AEB7-4A881A6C47B5}.Debug|x64.Build.0 = Debug|x64
+		{B90DD8BB-25C3-50B1-AEB7-4A881A6C47B5}.Release|x64.ActiveCfg = Release|x64
+		{B90DD8BB-25C3-50B1-AEB7-4A881A6C47B5}.Release|x64.Build.0 = Release|x64
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Debug|x64.ActiveCfg = Debug|x64
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Debug|x64.Build.0 = Debug|x64
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Release|x64.ActiveCfg = Release|x64
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C0FF640D-2C14-8DBE-F595-301E616989EF} = {7DFBF67E-E965-ABF5-32A4-5C9B9E4D894A}
+	EndGlobalSection
+EndGlobal
