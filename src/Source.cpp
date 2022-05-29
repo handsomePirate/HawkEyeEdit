@@ -1,4 +1,4 @@
-#include <application.h>
+#include "Application.hpp"
 #include <imgui_impl_glfw_gl3.h>
 #include <imgui_node_editor.h>
 #include <GL/gl3w.h>
@@ -86,6 +86,8 @@ int main(int argc, char* argv[])
 	ImVec4 clearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 	Application_Initialize();
+
+	Application_AddOutputNode(ImVec2(10, 10));
 
 	while (!glfwWindowShouldClose(window))
 	{
