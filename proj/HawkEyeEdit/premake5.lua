@@ -8,7 +8,10 @@ project "HawkEyeEdit"
 	objdir "obj/%{cfg.buildcfg}"
 	files { 
 		"../../src/**.hpp",
-		"../../src/**.cpp"
+		"../../src/**.cpp",
+		"../../ext/imgui/backends/imgui_impl_glfw.cpp",
+		"../../ext/imgui/backends/imgui_impl_opengl3.cpp",
+		"../../ext/imgui/examples/libs/gl3w/GL/gl3w.c"
 	}
 
 	flags {
@@ -16,15 +19,20 @@ project "HawkEyeEdit"
 	}
 
 	includedirs {
+		SoftwareCoreInclude,
 		"../../ext/imgui",
 		"../../ext/imgui/examples/libs/glfw/include",
-		"../../ext/imgui/examples/libs/gl3w"
+		"../../ext/imgui/examples/libs/gl3w",
+		"../../ext/imgui/backends"
 	}
 
 	links {
+		"SoftwareCore",
 		"imgui",
 		"../../ext/imgui/examples/libs/glfw/lib-vc2010-64/glfw3.lib",
-		"opengl32.lib"
+		"opengl32.lib",
+		"gdi32.lib",
+		"shell32.lib"
 	}
 	
 	filter "configurations:Debug"
