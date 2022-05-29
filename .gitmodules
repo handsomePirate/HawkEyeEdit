@@ -4,3 +4,6 @@
 [submodule "ext/SoftwareCore"]
 	path = ext/SoftwareCore
 	url = git@github.com:handsomePirate/SoftwareCore.git
+[submodule "ext/imgui-node-editor"]
+	path = ext/imgui-node-editor
+	url = git@github.com:handsomePirate/imgui-node-editor.git

@@ -21,6 +21,7 @@ project "HawkEyeEdit"
 	includedirs {
 		SoftwareCoreInclude,
 		"../../ext/imgui",
+		"../../ext/imgui-node-editor",
 		"../../ext/imgui/examples/libs/glfw/include",
 		"../../ext/imgui/examples/libs/gl3w",
 		"../../ext/imgui/backends"
@@ -29,6 +30,7 @@ project "HawkEyeEdit"
 	links {
 		"SoftwareCore",
 		"imgui",
+		"ImguiNodeEditor",
 		"../../ext/imgui/examples/libs/glfw/lib-vc2010-64/glfw3.lib",
 		"opengl32.lib",
 		"gdi32.lib",
