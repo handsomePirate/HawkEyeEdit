@@ -29,7 +29,7 @@ const char* Application_GetName()
 void Application_Initialize()
 {
     ed::Config config;
-    config.SettingsFile = "BasicInteraction.json";
+    config.SettingsFile = "HawkEyeEdit.json";
     g_Context = ed::CreateEditor(&config);
 }
 

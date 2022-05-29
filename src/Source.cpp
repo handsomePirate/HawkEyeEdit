@@ -83,10 +83,6 @@ int main(int argc, char* argv[])
 
 	ImGui_ImplGlfwGL3_Init(window, true);
 
-	//ax::NodeEditor::Config config;
-	//config.SettingsFile = "HawkEyeEdit.json";
-	//ax::NodeEditor::EditorContext* editorContext = ax::NodeEditor::CreateEditor(&config);
-
 	ImVec4 clearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 	Application_Initialize();
