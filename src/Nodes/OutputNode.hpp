@@ -4,7 +4,7 @@
 class OutputNode : public Node
 {
 public:
-	OutputNode(int id, int pinIdStart, int inputCount);
+	OutputNode();
 
 	void Construct() override;
 private:

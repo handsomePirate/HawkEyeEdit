@@ -49,7 +49,7 @@ void Application_AddOutputNode(const ImVec2& position)
 {
     ed::SetCurrentEditor(g_Context);
 
-    nodes.push_back(std::unique_ptr<Node>(new OutputNode{ uuid++, uuid++, 2 }));
+    nodes.push_back(std::unique_ptr<Node>(new OutputNode{}));
     nodes[nodes.size() - 1]->SetPosition(position);
 }
 

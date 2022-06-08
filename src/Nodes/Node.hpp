@@ -1,18 +1,23 @@
 #pragma once
+#include "UUIDSingleton.hpp"
 #include <imgui_node_editor.h>
 #include <vector>
 
 class Node
 {
 public:
-	Node(int id, int pinIdStart) : id_(id), pinIdStart_(pinIdStart) {}
+	Node() : id_(UUIDProvider.Get()) {}
 
-	const ax::NodeEditor::NodeId& GetID() const { return id_; }
+	const ax::NodeEditor::NodeId& GetId() const { return id_; }
 	void SetPosition(const ImVec2& position) { ax::NodeEditor::SetNodePosition(id_, position); }
 
 	virtual void Construct() = 0;
+
+	const ax::NodeEditor::PinId& GetInputId(int inputPosition) { return inputIds_[inputPosition]; }
+	const ax::NodeEditor::PinId& GetOutputId(int outputPosition) { return outputIds_[outputPosition]; }
+
 protected:
 	ax::NodeEditor::NodeId id_;
-	int pinIdStart_;
-	std::vector<ax::NodeEditor::PinId> pinIds_;
+	std::vector<ax::NodeEditor::PinId> inputIds_;
+	std::vector<ax::NodeEditor::PinId> outputIds_;
 };
