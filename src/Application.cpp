@@ -1,6 +1,8 @@
 #include "Nodes/Node.hpp"
 #include "Nodes/OutputNode.hpp"
 #include "Application.hpp"
+#include "Nodes/UUIDSingleton.hpp"
+#include <SoftwareCore/DefaultLogger.hpp>
 #include <imgui_node_editor.h>
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui_internal.h>
@@ -38,6 +40,7 @@ void Application_Initialize()
     ed::Config config;
     config.SettingsFile = "HawkEyeEdit.json";
     g_Context = ed::CreateEditor(&config);
+    UUIDProvider.Get();
 }
 
 void Application_Finalize()
@@ -83,18 +86,49 @@ void Application_Frame()
         ed::PinId inputPinId, outputPinId;
         if (ed::QueryNewLink(&inputPinId, &outputPinId))
         {
-            if (inputPinId && outputPinId) // both are valid, let's accept link
+            if (inputPinId && outputPinId)
             {
-                // TODO: Validate link can be created (avoid self-links).
-                // ed::RejectNewItem()
-
-                if (ed::AcceptNewItem())
+                ed::NodeId inputPinNodeId = 0;
+                ed::NodeId outputPinNodeId = 0;
+                for (const auto& node : nodes)
                 {
-                    // Since we accepted new link, lets add one to our list of links.
-                    g_Links.push_back({ ed::LinkId(g_NextLinkId++), inputPinId, outputPinId });
+                    const int inputCount = node->GetInputCount();
+                    const int outputCount = node->OutputCount();
 
-                    // Draw new link.
-                    ed::Link(g_Links.back().Id, g_Links.back().InputId, g_Links.back().OutputId);
+                    for (int i = 0; i < inputCount; ++i)
+                    {
+                        const auto inputId = node->GetInputId(i);
+                        if (inputId == inputPinId)
+                        {
+                            inputPinNodeId = node->GetId();
+                        }
+                    }
+
+                    for (int i = 0; i < outputCount; ++i)
+                    {
+                        const auto outputId = node->GetOutputId(i);
+                        if (outputId == outputPinId)
+                        {
+                            inputPinNodeId = node->GetId();
+                        }
+                    }
+                }
+
+                // TODO: Also make sure they are a valid pair by asking them.
+                if (!inputPinNodeId || !outputPinNodeId)
+                {
+                    ed::RejectNewItem();
+                }
+                else
+                {
+                    if (ed::AcceptNewItem())
+                    {
+                        // Since we accepted new link, lets add one to our list of links.
+                        g_Links.push_back({ ed::LinkId(g_NextLinkId++), inputPinId, outputPinId });
+
+                        // Draw new link.
+                        ed::Link(g_Links.back().Id, g_Links.back().InputId, g_Links.back().OutputId);
+                    }
                 }
             }
         }
@@ -136,7 +170,7 @@ void Application_Frame()
 
     if (g_FirstFrame)
     {
-        ed::NavigateToContent(0.0f);
+        ed::NavigateToContent(0.8f);
     }
 
     ed::SetCurrentEditor(nullptr);

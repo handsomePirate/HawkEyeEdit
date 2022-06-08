@@ -3,20 +3,20 @@
 #include <SoftwareCore/DefaultLogger.hpp>
 #include <string>
 
-// TODO: UUID generator.
+const int maxInputs = 10;
+static const auto id = UUIDProvider.Get();
 
 OutputNode::OutputNode()
-    : Node(), inputCount_(1) {}
-
-void OutputNode::Construct()
+    : Node(), inputCount_(1) 
 {
-    const int maxInputs = 10;
-
     for (int i = 0; i < maxInputs; ++i)
     {
         inputIds_.push_back(UUIDProvider.Get());
     }
+}
 
+void OutputNode::Construct()
+{
     ax::NodeEditor::BeginNode(id_);
     ImGui::Text("Output");
     
@@ -30,7 +30,7 @@ void OutputNode::Construct()
     for (int i = 0; i < inputCount_; ++i)
     {
         ax::NodeEditor::BeginPin(inputIds_[i], ax::NodeEditor::PinKind::Input);
-        ImGui::Text(("> Input " + std::to_string(i + 1)).c_str());
+        ImGui::Text(("> Resource " + std::to_string(i + 1)).c_str());
         ax::NodeEditor::EndPin();
     }
 
@@ -41,4 +41,14 @@ void OutputNode::Construct()
     ImGui::EndGroup();
 
     ax::NodeEditor::EndNode();
+}
+
+int OutputNode::GetInputCount() const
+{
+    return inputCount_;
+}
+
+int OutputNode::OutputCount() const
+{
+    return 0;
 }

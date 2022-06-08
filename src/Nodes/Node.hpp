@@ -13,8 +13,11 @@ public:
 
 	virtual void Construct() = 0;
 
-	const ax::NodeEditor::PinId& GetInputId(int inputPosition) { return inputIds_[inputPosition]; }
-	const ax::NodeEditor::PinId& GetOutputId(int outputPosition) { return outputIds_[outputPosition]; }
+	virtual int GetInputCount() const = 0;
+	virtual int OutputCount() const = 0;
+
+	const ax::NodeEditor::PinId& GetInputId(int inputPosition) const { return inputIds_[inputPosition]; }
+	const ax::NodeEditor::PinId& GetOutputId(int outputPosition) const { return outputIds_[outputPosition]; }
 
 protected:
 	ax::NodeEditor::NodeId id_;
