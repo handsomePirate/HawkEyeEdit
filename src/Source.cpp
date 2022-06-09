@@ -95,6 +95,7 @@ int main(int argc, char* argv[])
 	Application_Load(configFile.c_str(), filesystem.FileExists(configFile));
 
 	//Application_AddOutputNode(ImVec2(10, 10));
+	//Application_AddInputNode(ImVec2(10, 10));
 
 	while (!glfwWindowShouldClose(window))
 	{
