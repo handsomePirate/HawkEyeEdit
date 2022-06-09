@@ -1,11 +1,10 @@
 #pragma once
 #include "Node.hpp"
-#include <vector>
 
-class InputNode : public Node
+class RasterizedNode : public Node
 {
 public:
-	InputNode(const float x, const float y);
+	RasterizedNode(const float x, const float y);
 
 	void Construct() override;
 
@@ -18,6 +17,6 @@ public:
 	const char* GetType() const;
 
 private:
+	int inputCount_;
 	int outputCount_;
-	std::vector<Resource> resources;
 };

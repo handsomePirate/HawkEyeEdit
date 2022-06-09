@@ -1,6 +1,7 @@
 #include "Nodes/Node.hpp"
-#include "Nodes/OutputNode.hpp"
 #include "Nodes/InputNode.hpp"
+#include "Nodes/OutputNode.hpp"
+#include "Nodes/RasterizedNode.hpp"
 #include "Application.hpp"
 #include "Nodes/UUIDSingleton.hpp"
 #include <SoftwareCore/DefaultLogger.hpp>
@@ -67,28 +68,28 @@ void Application_Load(const char* yamlFileName, bool exists)
     for (const auto& node : nodesNode)
     {
         const std::string type = node["type"].as<std::string>();
+
+        const auto nodeMeta = node["meta"];
+
+        const float posX = nodeMeta["x"].as<float>();
+        const float posY = nodeMeta["y"].as<float>();
+
+        const int nodeIndex = nodes.size();
+
         if (type == "output")
         {
-            const auto nodeMeta = node["meta"];
-
-            const float posX = nodeMeta["x"].as<float>();
-            const float posY = nodeMeta["y"].as<float>();
-
-            const int nodeIndex = nodes.size();
             nodes.push_back(std::unique_ptr<Node>(new OutputNode{ posX , posY }));
-            nodes[nodeIndex]->Deserealize(node);
         }
         else if (type == "input")
         {
-            const auto nodeMeta = node["meta"];
-
-            const float posX = nodeMeta["x"].as<float>();
-            const float posY = nodeMeta["y"].as<float>();
-
-            const int nodeIndex = nodes.size();
             nodes.push_back(std::unique_ptr<Node>(new InputNode{ posX , posY }));
-            nodes[nodeIndex]->Deserealize(node);
         }
+        else if (type == "rasterized")
+        {
+            nodes.push_back(std::unique_ptr<Node>(new RasterizedNode{ posX , posY }));
+        }
+
+        nodes[nodeIndex]->Deserealize(node);
     }
 
     ed::SetCurrentEditor(nullptr);
@@ -139,6 +140,14 @@ void Application_AddOutputNode(const ImVec2& position)
     ed::SetCurrentEditor(g_Context);
 
     nodes.push_back(std::unique_ptr<Node>(new OutputNode{ position.x, position.y }));
+    nodes[nodes.size() - 1]->SetPosition(position);
+}
+
+void Application_AddRasterizedNode(const ImVec2& position)
+{
+    ed::SetCurrentEditor(g_Context);
+
+    nodes.push_back(std::unique_ptr<Node>(new RasterizedNode{ position.x, position.y }));
     nodes[nodes.size() - 1]->SetPosition(position);
 }
 

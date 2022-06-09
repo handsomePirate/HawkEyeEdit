@@ -18,4 +18,5 @@ public:
 
 private:
 	int inputCount_;
+	std::vector<Resource> resources;
 };

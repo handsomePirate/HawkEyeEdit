@@ -96,6 +96,7 @@ int main(int argc, char* argv[])
 
 	//Application_AddOutputNode(ImVec2(10, 10));
 	//Application_AddInputNode(ImVec2(10, 10));
+	//Application_AddRasterizedNode(ImVec2(10, 10));
 
 	while (!glfwWindowShouldClose(window))
 	{
