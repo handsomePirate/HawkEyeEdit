@@ -44,13 +44,7 @@ void InputNode::Construct()
 
     for (int i = 0; i < outputCount_; ++i)
     {
-        resources[i].Construct();
-        /*const std::string resourceText = "Resource " + std::to_string(i + 1) + " <";
-        ImGui::SetCursorPosX(nodePos.x + nodeSize.x - ImGui::CalcTextSize(resourceText.c_str()).x
-            - ImGui::GetScrollX() - 2 * ImGui::GetStyle().ItemSpacing.x);
-        ax::NodeEditor::BeginPin(GetOutputId(i), ax::NodeEditor::PinKind::Output);
-        ImGui::Text(resourceText.c_str());
-        ax::NodeEditor::EndPin();*/
+        resources[i].Construct(i);
     }
     
     ImGui::EndGroup();

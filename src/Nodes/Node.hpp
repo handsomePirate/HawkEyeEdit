@@ -67,14 +67,14 @@ class Resource
 public:
 	Resource(ax::NodeEditor::NodeId nodeId, int inPinSlot, int outPinSlot);
 
-	void Construct();
+	void Construct(int resourceIndex);
 
 	void Deserialize(const YAML::Node& node);
 	YAML::Node Serialize() const;
 
 private:
 	int type_ = 0;
-	std::string contentOperation_;
+	int contentOperation_ = 0;
 
 	std::string nodeIdStr_;
 
@@ -82,4 +82,5 @@ private:
 	ResourcePin output_;
 
 	const char* typeOptions_ = "image\0buffer";
+	const char* contentOperationOptions_ = "don't care\0preserve\0clear";
 };

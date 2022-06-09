@@ -130,9 +130,12 @@ Resource::Resource(ax::NodeEditor::NodeId nodeId, int inPinSlot, int outPinSlot)
 	nodeIdStr_(Core::String::NumberToUUIDString(nodeId.Get()))
 {}
 
-void Resource::Construct()
+void Resource::Construct(int resourceIndex)
 {
-	ImGui::PushID((nodeIdStr_ + "/" + std::to_string(input_.GetSlot()) + "/" + std::to_string(output_.GetSlot())).c_str());
+	ImGui::BeginGroup();
+
+	std::string idName = nodeIdStr_ + "/" + std::to_string(resourceIndex);
+	ImGui::PushID(idName.c_str());
 	
 	input_.Construct();
 	if (input_.Exists())
@@ -140,10 +143,12 @@ void Resource::Construct()
 		ImGui::SameLine();
 	}
 
-	/*const int inputIntWidth = 70;
+	const int inputIntWidth = 70;
 	ImGui::PushItemWidth(inputIntWidth);
 	ImGui::Combo("type", &type_, typeOptions_);
-	ImGui::PopItemWidth();*/
+	ImGui::SameLine();
+	ImGui::Combo("content operation", &contentOperation_, contentOperationOptions_);
+	ImGui::PopItemWidth();
 
 	if (output_.Exists())
 	{
@@ -152,6 +157,8 @@ void Resource::Construct()
 	output_.Construct();
 	
 	ImGui::PopID();
+
+	ImGui::EndGroup();
 }
 
 void Resource::Deserialize(const YAML::Node& node)
@@ -159,7 +166,7 @@ void Resource::Deserialize(const YAML::Node& node)
 	type_ = node["type"].as<int>();
 	if (node["content-operation"])
 	{
-		contentOperation_ = node["content-operation"].as<std::string>();
+		contentOperation_ = node["content-operation"].as<int>();
 	}
 	input_.Deserialize(node["input"]);
 	output_.Deserialize(node["output"]);

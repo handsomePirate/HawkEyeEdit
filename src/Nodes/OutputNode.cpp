@@ -33,7 +33,7 @@ void OutputNode::Construct()
 
     for (int i = 0; i < inputCount_; ++i)
     {
-        resources[i].Construct();
+        resources[i].Construct(i);
         /*const std::string resourceText = "> Resource " + std::to_string(i + 1);
         ax::NodeEditor::BeginPin(GetInputId(i), ax::NodeEditor::PinKind::Input);
         ImGui::Text(resourceText.c_str());
