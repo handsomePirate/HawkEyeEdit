@@ -4,3 +4,6 @@
 [submodule "ext/imgui-node-editor"]
 	path = ext/imgui-node-editor
 	url = git@github.com:handsomePirate/imgui-node-editor.git
+[submodule "ext/yaml-cpp"]
+	path = ext/yaml-cpp
+	url = git@github.com:handsomePirate/yaml-cpp.git

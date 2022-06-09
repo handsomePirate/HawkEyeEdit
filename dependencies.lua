@@ -1,4 +1,5 @@
 group "ext"
 	include "ext/imgui-node-editor"
+	include "ext/yaml-cpp"
 	include "ext/SoftwareCore/proj/SoftwareCore"
 group ""

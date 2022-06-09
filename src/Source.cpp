@@ -4,6 +4,8 @@
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
 #include <SoftwareCore/DefaultLogger.hpp>
+#include <SoftwareCore/Filesystem.hpp>
+#include <SoftwareCore/Process.hpp>
 #include <iostream>
 
 void Print(const char* message, Core::LoggerSeverity severity)
@@ -87,7 +89,12 @@ int main(int argc, char* argv[])
 
 	Application_Initialize();
 
-	Application_AddOutputNode(ImVec2(10, 10));
+	Core::Filesystem filesystem(CoreProcess.GetRuntimePath());
+	const auto configFile = filesystem.GetAbsolutePath("./testfile.yml");
+	
+	Application_Load(configFile.c_str(), filesystem.FileExists(configFile));
+
+	//Application_AddOutputNode(ImVec2(10, 10));
 
 	while (!glfwWindowShouldClose(window))
 	{

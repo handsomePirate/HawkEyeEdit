@@ -3,9 +3,12 @@
 #include "Application.hpp"
 #include "Nodes/UUIDSingleton.hpp"
 #include <SoftwareCore/DefaultLogger.hpp>
+#include <SoftwareCore/Filesystem.hpp>
+#include <yaml-cpp/yaml.h>
 #include <imgui_node_editor.h>
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui_internal.h>
+#include <fstream>
 #include <vector>
 #include <memory>
 
@@ -20,12 +23,16 @@ struct LinkInfo
     ed::LinkId Id;
     ed::PinId InputId;
     ed::PinId OutputId;
+    ed::NodeId InputNodeId;
+    ed::NodeId OutputNodeId;
 };
 
 static ed::EditorContext* g_Context = nullptr;
 static bool g_FirstFrame = true;
 static ImVector<LinkInfo> g_Links;
 static int g_NextLinkId = 100;
+
+static std::string yamlFileNameSave;
 
 int uuid = 1;
 std::vector<std::unique_ptr<Node>> nodes;
@@ -43,8 +50,67 @@ void Application_Initialize()
     UUIDProvider.Get();
 }
 
+void Application_Load(const char* yamlFileName, bool exists)
+{
+    if (!exists)
+    {
+        yamlFileNameSave = yamlFileName;
+        return;
+    }
+
+    ed::SetCurrentEditor(g_Context);
+
+    yamlFileNameSave = yamlFileName;
+    const auto rootNode = YAML::LoadFile(yamlFileName);
+    const auto nodesNode = rootNode["nodes"];
+    for (const auto& node : nodesNode)
+    {
+        const std::string type = node["type"].as<std::string>();
+        if (type == "output")
+        {
+            const auto nodeMeta = node["meta"];
+
+            const float posX = nodeMeta["x"].as<float>();
+            const float posY = nodeMeta["y"].as<float>();
+
+            const int nodeIndex = nodes.size();
+            nodes.push_back(std::unique_ptr<Node>(new OutputNode{ posX , posY }));
+            nodes[nodeIndex]->Deserealize(node);
+        }
+    }
+
+    ed::SetCurrentEditor(nullptr);
+}
+
 void Application_Finalize()
 {
+    if (nodes.empty())
+    {
+        ed::DestroyEditor(g_Context);
+        return;
+    }
+
+    ed::SetCurrentEditor(g_Context);
+
+    std::ofstream ofs(yamlFileNameSave);
+
+    YAML::Node rootNode;
+    YAML::Node nodesNode = rootNode["nodes"];
+    for (const auto& node : nodes)
+    {
+        const int nodeIndex = nodesNode.size();
+        nodesNode.push_back(node->Serialize());
+        // TODO: links -- rootNode["nodes"][rootNode["nodes"].size() - 1]
+        
+        const auto pos = node->GetPosition();
+        nodesNode[nodeIndex]["meta"]["x"] = pos.x;
+        nodesNode[nodeIndex]["meta"]["y"] = pos.y;
+    }
+    ofs << rootNode;
+    ofs.close();
+
+    ed::SetCurrentEditor(nullptr);
+
     ed::DestroyEditor(g_Context);
 }
 
@@ -52,7 +118,7 @@ void Application_AddOutputNode(const ImVec2& position)
 {
     ed::SetCurrentEditor(g_Context);
 
-    nodes.push_back(std::unique_ptr<Node>(new OutputNode{}));
+    nodes.push_back(std::unique_ptr<Node>(new OutputNode{ position.x, position.y }));
     nodes[nodes.size() - 1]->SetPosition(position);
 }
 
@@ -124,7 +190,7 @@ void Application_Frame()
                     if (ed::AcceptNewItem())
                     {
                         // Since we accepted new link, lets add one to our list of links.
-                        g_Links.push_back({ ed::LinkId(g_NextLinkId++), inputPinId, outputPinId });
+                        g_Links.push_back({ ed::LinkId(g_NextLinkId++), inputPinId, outputPinId, inputPinNodeId, outputPinNodeId });
 
                         // Draw new link.
                         ed::Link(g_Links.back().Id, g_Links.back().InputId, g_Links.back().OutputId);

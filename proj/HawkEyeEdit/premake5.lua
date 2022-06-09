@@ -22,6 +22,7 @@ project "HawkEyeEdit"
 		SoftwareCoreInclude,
 		ImguiInclude,
 		ImguiNodeEditorInclude,
+		YamlInclude,
 		"../../ext/imgui-node-editor/external/glfw/include",
 		"../../ext/imgui-node-editor/external/gl3w/Include",
 		"../../ext/imgui-node-editor/examples/application/include",
@@ -31,6 +32,7 @@ project "HawkEyeEdit"
 	links {
 		"SoftwareCore",
 		"ImguiNodeEditor",
+		"yaml-cpp",
 		"../../ext/imgui-node-editor/external/glfw/lib-vc2010-64/glfw3.lib",
 		"opengl32.lib"
 	}
