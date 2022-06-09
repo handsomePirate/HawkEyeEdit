@@ -172,14 +172,14 @@ void Application_Frame()
         ed::PinId inputPinId, outputPinId;
         if (ed::QueryNewLink(&inputPinId, &outputPinId))
         {
-            if (inputPinId && outputPinId)
+            if (inputPinId && outputPinId && inputPinId != outputPinId)
             {
                 ed::NodeId inputPinNodeId = 0;
                 ed::NodeId outputPinNodeId = 0;
                 for (const auto& node : nodes)
                 {
                     const int inputCount = node->GetInputCount();
-                    const int outputCount = node->OutputCount();
+                    const int outputCount = node->GetOutputCount();
 
                     for (int i = 0; i < inputCount; ++i)
                     {
@@ -187,6 +187,13 @@ void Application_Frame()
                         if (inputId == inputPinId)
                         {
                             inputPinNodeId = node->GetId();
+                            break;
+                        }
+
+                        if (inputId == outputPinId)
+                        {
+                            outputPinNodeId = node->GetId();
+                            break;
                         }
                     }
 
@@ -195,7 +202,14 @@ void Application_Frame()
                         const auto outputId = node->GetOutputId(i);
                         if (outputId == outputPinId)
                         {
+                            outputPinNodeId = node->GetId();
+                            break;
+                        }
+
+                        if (outputId == inputPinId)
+                        {
                             inputPinNodeId = node->GetId();
+                            break;
                         }
                     }
                 }

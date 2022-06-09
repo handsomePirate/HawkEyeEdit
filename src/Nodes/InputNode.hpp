@@ -9,7 +9,7 @@ public:
 	void Construct() override;
 
 	int GetInputCount() const;
-	int OutputCount() const;
+	int GetOutputCount() const;
 
 	void Deserealize(const YAML::Node& node);
 	YAML::Node Serialize() const;

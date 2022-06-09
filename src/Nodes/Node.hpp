@@ -21,7 +21,7 @@ public:
 	virtual void Construct() = 0;
 
 	virtual int GetInputCount() const = 0;
-	virtual int OutputCount() const = 0;
+	virtual int GetOutputCount() const = 0;
 
 	const ax::NodeEditor::PinId& GetInputId(int inputPosition) const { return id_.Get() + inputPosition + 1; }
 	const ax::NodeEditor::PinId& GetOutputId(int outputPosition) const { return id_.Get() + maxInputs_ + outputPosition + 1; }

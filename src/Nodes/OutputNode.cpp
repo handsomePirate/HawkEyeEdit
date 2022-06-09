@@ -46,7 +46,7 @@ int OutputNode::GetInputCount() const
     return inputCount_;
 }
 
-int OutputNode::OutputCount() const
+int OutputNode::GetOutputCount() const
 {
     return 0;
 }
